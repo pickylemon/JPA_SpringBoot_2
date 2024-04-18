@@ -1,0 +1,25 @@
+# 운영의 설정 (테스트와 운영은 서로 설정을 따로 가져가는게 맞다)
+
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/jpashop
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+# 참고 : https://docs.spring.io/spring-boot/docs/current/reference/html/data.html#data.sql.datasource
+# https://docs.spring.io/spring-boot/docs/3.2.4/reference/html/howto.html#howto.data-access.jpa-properties
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true  # 이건 system.out을 통한 출력
+        format_sql: true
+
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+      # 이건 로거를 통한 출력
+      org.hibernate.type.descriptor.sql.basicBinder: TRACE
+      # 쿼리파라미터 출력하기

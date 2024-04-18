@@ -1,0 +1,25 @@
+# 테스트의 설정
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+#    테스트에서는 embedded버전으로 h2 사용하기
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+# 참고 : https://docs.spring.io/spring-boot/docs/current/reference/html/data.html#data.sql.datasource
+# https://docs.spring.io/spring-boot/docs/3.2.4/reference/html/howto.html#howto.data-access.jpa-properties
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true  # 이건 system.out을 통한 출력
+        format_sql: true
+
+#사실 위 설정 다 없어도 됨. datasource 설정 없으면, springboot는 메모리모드로 돌려버림!
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+      # 이건 로거를 통한 출력
