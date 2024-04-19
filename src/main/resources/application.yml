@@ -16,6 +16,10 @@ spring:
         show_sql: true  # 이건 system.out을 통한 출력
         format_sql: true
 
+  profiles:
+    active: local
+
+
 
   logging:
     level:
@@ -23,6 +27,5 @@ spring:
       # 이건 로거를 통한 출력
       org.hibernate.type.descriptor.sql.basicBinder: TRACE
       # 쿼리파라미터 출력하기
-
 
 

@@ -20,7 +20,9 @@ public class ItemRepository {
         if(item.getId() == null){
             em.persist(item); //처음 저장하는 경우 id값이 없다.
         } else {
-            em.merge(item); //update와 유사.
+//            em.merge(item); //update와 유사.
+            Item findItem = em.find(Item.class, item.getId());
+
         }
     }
 
