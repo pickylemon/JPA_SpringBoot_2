@@ -45,4 +45,15 @@ public class MemberService {
         return memberRepository.findOne(memberId);
     }
 
+    @Transactional
+    public void update(Long id, String name) {
+        //수정할때는 가급적 변경감지를 사용할 것.
+        Member findMember = memberRepository.findOne(id);
+        findMember.setName(name);
+
+        //return 값을 Member로 해도 된다.
+        //단, Command성(변경성 메서드)과 Query(조회성 메서드)가 분리되는 편이 더 좋기 때문에
+        //유지보수에도 더 좋다.
+
+    }
 }
