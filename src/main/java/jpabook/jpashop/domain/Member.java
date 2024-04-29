@@ -23,7 +23,7 @@ public class Member {
     @Embedded
     private Address address;
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-//    @JsonIgnore
+    @JsonIgnore
     //회원과 관련된 조회API가 하나가 아닐텐데 엔티티에 @JsonIgnore같은 것을 계속 추가할 수 없다.
     private List<Order> orders = new ArrayList<>();
 
