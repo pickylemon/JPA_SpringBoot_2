@@ -5,9 +5,10 @@ import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderSearch;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
+import jpabook.jpashop.repository.order.simpleQuery.OrderSimpleQueryDto;
+import jpabook.jpashop.repository.order.simpleQuery.OrderSimpleQueryRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderSimpleApiController {
     private final OrderRepository orderRepository;
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     @GetMapping("/api/v1/simple-orders")
     public List<Order> ordersV1(){
@@ -63,6 +65,14 @@ public class OrderSimpleApiController {
         //**반복 : LAZY로딩 디폴트 + 필요에 따라 명시적으로 fetch조인으로 성능 최적화(N+1문제 해결)
         List<Order> orders = orderRepository.findAllWithMemberDelivery();
         return orders.stream().map(SimpleOrderDto::new).collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> ordersV4(){
+//        return orderRepository.findOrderDtos();
+        //repository 계층은 엔티티와 객체 그래프 탐색용으로 순수하게 남겨두고,
+        //성능최적화가 필요한 쿼리를 별도의 Repository 클래스로 분리해서 관리함.
+        return orderSimpleQueryRepository.findOrderDtos();
     }
 
     @Data

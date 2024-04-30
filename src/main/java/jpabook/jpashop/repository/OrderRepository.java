@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -111,4 +110,6 @@ public class OrderRepository {
 
         return em.createQuery(jpql, Order.class).getResultList();
     }
+
+
 }
