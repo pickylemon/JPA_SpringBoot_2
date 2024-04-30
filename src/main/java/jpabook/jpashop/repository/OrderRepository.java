@@ -40,6 +40,7 @@ public class OrderRepository {
         //무엇보다 핵심 비즈니스 로직이 아닌 분기처리로 코드가 도배됨..
 
         String jpql = "select o from Order o join o.member m ";
+//        String jpql = "select o from Order o join fetch o.member m ";
         boolean isFirstCondition = true;
 
         //주문 상태 검색
@@ -103,5 +104,11 @@ public class OrderRepository {
         cq.where(cb.and(criteria.toArray(new Predicate[criteria.size()])));
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000);
         return query.getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery() {
+        String jpql = "select o from Order o join fetch o.member m join fetch o.delivery d";
+
+        return em.createQuery(jpql, Order.class).getResultList();
     }
 }

@@ -55,6 +55,16 @@ public class OrderSimpleApiController {
         return dtoList;
     }
 
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDto> ordersV3(){
+        //v2를 성능 최적화 한게 v3
+        //fetch join으로 select order시 member와 delivery도 같이 가져온다.
+        //프록시도 아니고 정말 아예 조인 쿼리를 날려서 같이 가져옴
+        //**반복 : LAZY로딩 디폴트 + 필요에 따라 명시적으로 fetch조인으로 성능 최적화(N+1문제 해결)
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        return orders.stream().map(SimpleOrderDto::new).collect(Collectors.toList());
+    }
+
     @Data
     static class SimpleOrderDto {
         private Long orderId;
