@@ -5,6 +5,7 @@ import jpabook.jpashop.repository.OrderRepository;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class OrderApiController {
     private final OrderRepository orderRepository;
@@ -52,6 +54,16 @@ public class OrderApiController {
         //지연로딩이라 나가는 SQL수가 많다.
         return orderRepository.findAllByString(new OrderSearch())
                 .stream().map(OrderDto::new).collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/v3/orders")
+    public List<OrderDto> ordersV3(){
+        //fetch조인으로 성능 최적화
+        List<OrderDto> collect = orderRepository.findAllWithItem().stream()
+                .map(OrderDto::new).collect(Collectors.toList());
+
+        log.info("\n collect={} \n", collect);
+        return collect;
     }
 
 

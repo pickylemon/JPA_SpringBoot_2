@@ -111,5 +111,18 @@ public class OrderRepository {
         return em.createQuery(jpql, Order.class).getResultList();
     }
 
+    public List<Order> findAllWithItem(){
+        String jpql = "select distinct o from Order o " +
+                " join fetch o.member m " +
+                " join fetch o.delivery d " +
+                " join fetch o.orderItems oi " +
+                //order와 orderItems를 join하면 뻥튀기 발생함
+                // (orderItems 갯수만큼 order 중복 발생)
+                " join fetch oi.item i ";
 
+        return em.createQuery(jpql, Order.class)
+                .setFirstResult(1)
+                .setMaxResults(100)
+                .getResultList();
+    }
 }
