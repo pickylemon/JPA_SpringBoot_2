@@ -106,9 +106,22 @@ public class OrderRepository {
     }
 
     public List<Order> findAllWithMemberDelivery() {
-        String jpql = "select o from Order o join fetch o.member m join fetch o.delivery d";
+        String jpql = "select o from Order o " +
+                " join fetch o.member m " +
+                " join fetch o.delivery d";
 
         return em.createQuery(jpql, Order.class).getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        String jpql = "select o from Order o " +
+                " join fetch o.member m " +
+                " join fetch o.delivery d ";
+
+        return em.createQuery(jpql, Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList(); //xToOne관계라서 페이징 전혀 문제 없음(가능!)
     }
 
     public List<Order> findAllWithItem(){

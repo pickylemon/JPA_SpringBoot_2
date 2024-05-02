@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -66,6 +67,15 @@ public class OrderApiController {
         return collect;
     }
 
+    @GetMapping("/api/v3.1/orders")
+    public List<OrderDto> ordersV3_page(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "100") Integer size){
+        int offset = (page-1) * size;
+        return orderRepository.findAllWithMemberDelivery(offset, size)
+                .stream()
+                .map(OrderDto::new)
+                .collect(Collectors.toList());
+    }
+
 
     @Data
     static class OrderDto {
@@ -84,7 +94,8 @@ public class OrderApiController {
             this.address = o.getDelivery().getAddress();
             this.orderStatus = o.getStatus();
             //orderItem은 엔티티라 lazy로딩 되므로 프록시 초기화를 시켜주는 코드 필요
-            o.getOrderItems().stream().forEach(i->i.getItem().getName());
+
+            //o.getOrderItems().stream().forEach(i->i.getItem().getName());
             this.orderItems = o.getOrderItems().stream()
                     .map(OrderItemDto::new)
                     .collect(Collectors.toList());

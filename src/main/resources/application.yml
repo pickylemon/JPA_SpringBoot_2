@@ -15,6 +15,7 @@ spring:
       hibernate:
         show_sql: true  # 이건 system.out을 통한 출력
         format_sql: true
+        default_batch_fetch_size: 10 # global batch size 설정
 
   profiles:
     active: local
